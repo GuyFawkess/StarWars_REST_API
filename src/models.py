@@ -37,10 +37,29 @@ class Character(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(50), nullable=True)
     description = db.Column(db.String(150), nullable=True)
+    eye_color = db.Column(db.String(50), default="brown")
 
     def serialize(self):
         return {
             "id": self.id,
             "name": self.name,
-            "description": self.description
+            "description": self.description,
+            "eyeColor": self.eye_color
+        }
+
+class Favorite(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True, nullable=False)
+    planet_id = db.Column(db.Integer, db.ForeignKey('planets.id'),  nullable=True)
+    character_id = db.Column(db.Integer, db.ForeignKey('characters.id'),  nullable=True)
+
+    planet = db.relationship('Planet')
+    character = db.relationship('Character')
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "userId": self.user_id,
+            "planetId": self.planet_id,
+            "characterId": self.character_id
         }
