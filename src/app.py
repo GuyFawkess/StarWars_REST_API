@@ -120,6 +120,31 @@ def add_favorite_character(character_id):
 
 
 
+@app.route('/favorite/planet/<int:planet_id>', methods=['DELETE'])
+def delete_planet(planet_id):
+    favorite = Favorite.query.filter(db.and_(Favorite.user_id == 1, Favorite.planet_id == planet_id)).first()
+
+    if(favorite is None):
+        return jsonify({"msg": "no existe para borrar"})
+
+    db.session.delete(favorite)
+    db.session.commit()
+
+    return jsonify(favorite.serialize()), 200
+
+
+
+@app.route('/favorite/character/<int:character_id>', methods=['DELETE'])
+def delete_character(character_id):
+    favorite = Favorite.query.filter(db.and_(Favorite.user_id == 1, Favorite.character_id == character_id)).first()
+
+    if(favorite is None):
+        return jsonify({"msg": "no existe para borrar"})
+
+    db.session.delete(favorite)
+    db.session.commit()
+
+    return jsonify(favorite.serialize()), 200
 
 
 
@@ -130,6 +155,13 @@ def add_favorite_character(character_id):
 
 
 
+# favorite = Favorite.query.filter(db.and_(Favorite.user_id == 1, Favorite.planet_id == planet_id)).first()
+#     if favorite:
+#         db.session.delete(favorite)
+#         db.session.commit()
+#         return jsonify(favorite.serialize()), 200
+#     else:
+#         return jsonify({'error': 'Planet not found'}), 404
 
 
 
