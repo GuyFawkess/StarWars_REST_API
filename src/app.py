@@ -82,6 +82,43 @@ def get_all_users():
     return jsonify(result), 200
 
 
+@app.route('/user/<int:id>', methods=['GET'])
+def get_user(id):
+
+    user = User.query.get(id)
+    if user is None:
+        return jsonify({"msg": "404 no existe"}), 404
+
+    return jsonify(user.serialize()), 200
+
+
+
+
+@app.route('/favorites', methods=['GET'])
+def get_favorites():
+    favorites = Favorite.query.all()
+    result = [fav.serialize() for fav in favorites]
+    return jsonify(result), 200
+
+
+@app.route('/favorite/planet/<int:planet_id>', methods=['POST'])
+def add_favorite_planet(planet_id):
+    favorite = Favorite(user_id=1, planet_id = planet_id)
+    db.session.add(favorite)
+    db.session.commit()
+
+    return jsonify(favorite.serialize()), 200
+
+
+@app.route('/favorite/character/<int:character_id>', methods=['POST'])
+def add_favorite_character(character_id):
+    favorite = Favorite(user_id=1, characterID = character_id)
+    db.session.add(favorite)
+    db.session.commit()
+
+    return jsonify(favorite.serialize()), 200
+
+
 
 
 

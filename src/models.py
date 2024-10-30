@@ -11,7 +11,7 @@ class User(db.Model):
     favorites = db.relationship('Favorite', backref='user')
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '<User %r>' % self.id
 
     def serialize(self):
         return {
@@ -49,9 +49,9 @@ class Character(db.Model):
 
 class Favorite(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True, nullable=False)
-    planet_id = db.Column(db.Integer, db.ForeignKey('planets.id'),  nullable=True)
-    character_id = db.Column(db.Integer, db.ForeignKey('characters.id'),  nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    planet_id = db.Column(db.Integer, db.ForeignKey('planet.id'), nullable=True)
+    character_id = db.Column(db.Integer, db.ForeignKey('character.id'), nullable=True)
 
     planet = db.relationship('Planet')
     character = db.relationship('Character')
